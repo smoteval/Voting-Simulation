@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Electoral System Visualization</title>
+
+    <link rel="stylesheet" type="text/css" href="css/electionViz.css">
+    <script src="lib/jquery-2.1.4.js"></script>
+    <script src="lib/underscore-1.8.3.min.js"></script>
+
+    <!-- Add all your javascript files here.  If we were doing this for real, we'd
+      use tools to automatically combine many of these files to reduce the network
+      overhead.  But we can't do everything... -->
+    <script src="js/model.js"></script>
+    <script src="js/View1.js"></script>
+    <script src="js/view2.js"></script>
+    <script src="js/ErrorView.js"></script>
+    <script src="js/controller.js"></script>
+    <script src="js/controller2.js"></script>
+    <script src="js/electionViz.js"></script>
+</head>
+
+<body>
+    <div>
+        <h2> Inputs for simulating elections: </h2> Number of Candidaates:
+        <input type="number" id="numcans" min="2" max="6">
+        <form>
+            <ul>
+                <li> Candidate 1
+                    <!-- Look, the closing </li> tag is not placed here! -->
+                    <ol>
+                        <li>
+                            <label> Fiscal Policy: </label>
+                            <input type="number" id="can1x" step="0.001" min="-0.25" max="1.25"> </li>
+                        <li>
+                            <label>Social Policy: </label>
+                            <input type="number" id="can1y" step="0.001" min="-0.25" max="1.25"> </li>
+                    </ol>
+                </li>
+                <li>Candidate 2
+                    <!-- Look, the closing </li> tag is not placed here! -->
+                    <ol>
+                        <li>
+                            <label>Fiscal Policy: </label>
+                            <input type="number" id="can2x" step="0.001" min="-0.25" max="1.25"> </li>
+                        <li>
+                            <label> Social Policy: </label>
+                            <input type="number" id="can2y" step="0.001" min="-0.25" max="1.25">
+                        </li>
+                    </ol>
+                </li>
+                <!-- Here is the closing </li> tag -->
+                <li>Candidate 3
+                    <!-- Look, the closing </li> tag is not placed here! -->
+                    <ol>
+                        <li>
+                            <label> Fiscal Policy: </label>
+                            <input type="number" id="can3x" step="0.001" min="-0.25" max="1.25"> </li>
+                        <li>
+                            <label>Social Policy: </label>
+                            <input type="number" id="can3y" step="0.001" min="-0.25" max="1.25">
+                        </li>
+                    </ol>
+                </li>
+                <li>Candidate 4
+                    <!-- Look, the closing </li> tag is not placed here! -->
+                    <ol>
+                        <li>
+                            <label>Fiscal Policy: </label>
+                            <input type="number" id="can4x" step="0.001" min="-0.25" max="1.25">
+                        </li>
+                        <li>
+                            <label>Social Policy: </label>
+                            <input type="number" id="can4y" step="0.001" min="-0.25" max="1.25"> </li>
+                    </ol>
+                </li>
+                <li>Candidate 5
+                    <!-- Look, the closing </li> tag is not placed here! -->
+                    <ol>
+                        <li>
+                            <label>Fiscal Policy: </label>
+                            <input type="number" id="can5x" step="0.001" min="-0.25" max="1.25"> </li>
+                        <li>
+                            <label>Social Policy: </label>
+                            <input type="number" id="can5y" step="0.001" min="-0.25" max="1.25">
+                        </li>
+                    </ol>
+                </li>
+                <li>Candidate 6
+                    <!-- Look, the closing </li> tag is not placed here! -->
+                    <ol>
+                        <li>
+                            <label>Fiscal Policy: </label>
+                            <input type="number" id="can6x" step="0.001" min="-0.25" max="1.25"> </li>
+                        <li>
+                            <label>Social Policy: </label>
+                            <input type="number" id="can6y" step="0.001" min="-0.25" max="1.25">
+                        </li>
+                    </ol>
+                </li>
+            </ul>
+        </form>
+
+        <ul>
+            <li>
+                <label>Number of Voters: </label>
+                <input type="number" id="numvotes"  min="200" max="100000"> </li>
+            <li>
+                <label>Resolution: </label>
+                <input type="number" id="res"  min="1" max="100"> </li>
+            <li>
+                <label>Sigma: </label>
+                <input type="number" id="dist" step="0.001" min="0.1" max="2.0"> </li>
+        </ul>
+        </br>
+        <button id="submit" class="myButton"> Get the simulation </button>
+
+    </div>
+    </br>
+
+
+    <div>
+        <h2> Inputs for displaying a voting distribution </h2>
+        <ul>
+            <li>
+                <label>Sample size: </label>
+                <input type="number" id="samplesize" min="200" max="100000"> </li>
+            <li>
+                <label>Sigma: </label>
+                <input type="number" id="sig" step="0.001" min="0.1" max="2.0"> </li>
+        </ul>
+        <button id="GetSample" class="myButton2"> Show the Voting Distribution </button>
+    </div>
+    </br>
+
+    <div class="election">
+        <div id="col1">
+            <canvas id="c1" width="200" height="200"></canvas>
+            <canvas id="c2" width="200" height="200"></canvas>
+        </div>
+        <div id="col2">
+            <canvas id="c3" width="200" height="200"></canvas>
+            <canvas id="c4" width="200" height="200"></canvas>
+        </div>
+    </div>
+
+
+    <div id="fade"> </div>
+    <div id="modal">
+        <img id="loader" src="images/loading.gif" />
+    </div>
+
+
+
+    <div id="shadowing"></div>
+      <div id="box">
+            <span id="boxclose" onClick="document.getElementById('box').style.display='none';
+              document.getElementById('shadowing').style.display='none'"> </span>
+            <div id="boxcontent">    
+                There is a problem with your inputs. Make sure your inputs respect the following bounds: </br> </br> </br>
+                <ol>
+                   <li> The number of candidtes should be between 2 and 6 </li> 
+                   <li> Candidate coordinates should be between -0.25 and 1.25</li>
+                   <li> The Number of voters should be between 200 and 100000</li>
+                   <li> Resolution should be between 1 and 100</li>
+                   <li> Sigma should be between 0.1 and 2.0</li> 
+                </ol>    
+            </div>
+      </div>
+
+      <div id="box2">
+            <span id="boxclose" onClick="document.getElementById('box2').style.display='none';
+              document.getElementById('shadowing').style.display='none'"> </span>
+            <div id="boxcontent">    
+                There is a problem with your inputs. Make sure your inputs respect the following bounds: </br> </br> </br>
+                <ol>
+                   <li> The Number of voters should be between 200 and 100000</li>
+                   <li> Sigma should be between 0.1 and 2.0</li> 
+                </ol>    
+            </div>
+      </div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
